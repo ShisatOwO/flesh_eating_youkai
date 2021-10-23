@@ -1,0 +1,6 @@
+from fey.fey_components.global_comp_table import FeyGlobalComponentTable
+from fey.fey_components.base_component import FeyBaseComponent
+
+
+class FeyGlobalComponentTable(FeyGlobalComponentTable): ...
+class FeyBaseComponent(FeyBaseComponent): ...
