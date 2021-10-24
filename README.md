@@ -24,8 +24,17 @@ To run the example:
 
     Navigate into the repo you just cloned and execute
     the python file located at "*app/app.py*"
+    
+    **Linux/Mac**
     ```shell
-    cd flesh_eating_youkai && python app/app.py
+    cd flesh_eating_youkai && PYTHONPATH=./ python app/app.py
+    ```
+    
+    **Windows**
+    ```cmd
+    cd flesh_eating_youkai
+    set PYTHONPATH=%PYTHONPATH%;"./"
+    python app/app.py
     ```
  
  ## Note
