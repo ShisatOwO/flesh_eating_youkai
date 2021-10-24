@@ -25,6 +25,10 @@ To run the example:
     Navigate into the repo you just cloned and execute
     the python file located at "*app/app.py*"
     
+    Dont forget to add the root of the repo to your PYTHONPATH, otherwise python
+    will not be able to locate the "*fey*" package. The commmands below will add fey to the
+    PYTHONPATH temporarely.
+    
     **Linux/Mac**
     ```shell
     cd flesh_eating_youkai && PYTHONPATH=./ python app/app.py
