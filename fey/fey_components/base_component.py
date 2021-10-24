@@ -57,6 +57,11 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
 
         return out
 
+    def qsearch(self, name: str = None, id: int = None) -> FeyBaseComponent:
+        if len((out := self.search(name, None, id))) == 1:
+            return out[0]
+        return False
+
     def search(self, name: str = None, type=None ,  id: int = None) -> [FeyBaseComponent, ]:
         if self._parent is not None:
             return self._parent.search(name, type, id)

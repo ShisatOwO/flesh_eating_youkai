@@ -57,3 +57,8 @@ class FeyComponentManagement(ABC):
             res = self._components
 
         return res
+
+    def qget(self, name: str = None, id: int = None):
+        if len((out := self.get(name, None, id))) == 1:
+            return out[0]
+        False
