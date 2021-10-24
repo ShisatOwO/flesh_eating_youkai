@@ -2,14 +2,20 @@ from fey import *
 
 
 class DummyComponentA(FeyBaseComponent):
-    def __init__(self, name: str, *args, **kwargs):
-        self.name = name
+    def __init__(self, pname: str, *args, **kwargs):
+        self._name = pname
         super().__init__(*args, **kwargs)
 
 
 class DummyComponentB(FeyBaseComponent):
-    def __init__(self, name: str, *args, **kwargs):
-        self.name = name
+    def __init__(self, pname: str, *args, **kwargs):
+        self._name = pname
+        super().__init__(*args, **kwargs)
+
+
+class DummyComponentC(FeyBaseComponent):
+    def __init__(self, pname: str, *args, **kwargs):
+        self._name = pname
         super().__init__(*args, **kwargs)
 
 
@@ -23,11 +29,23 @@ FeyGlobalConfig(
     })
 )
 
+FeyGlobalComponentTable([
+    DummyComponentA(pname="C:A L:0", comps=[
+        DummyComponentB(pname="C:B L:1"),
+        DummyComponentB(pname="C:C L1"),
+    ]),
+    DummyComponentA(pname="C:A L:0", name="root1", comps=[
+        DummyComponentC(pname="C:C L:1", name="person1", comps=[
+            DummyComponentB(pname="C:C L:2", name="person2")
+        ]),
+    ]),
+])
 
-FeyGlobalComponentTable([DummyComponentA("1")]).name("component_a")
-FeyGlobalComponentTable([DummyComponentA("2")])
-FeyGlobalComponentTable([DummyComponentA("3")]).name("component_b")
+print(FeyGlobalComponentTable().get("root1")[0].search("person2"))
+FeyGlobalComponentTable().get("root1")[0].search("person1")[0].disable()
+print(FeyGlobalComponentTable().get("root1")[0].search("person2"))
+FeyGlobalComponentTable().get("root1")[0].search("person1")[0].enable()
 
-component_b = FeyGlobalComponentTable().get(name="component_b")[0].comp_id
-print(f"\n\"component_b\" id: {component_b}")
-print(FeyGlobalConfig().get_dict())
+print(FeyGlobalComponentTable().get("root1")[0].search("person2"))
+print(FeyGlobalComponentTable().get("root1")[0].search("person1")[0].suicide())
+print(FeyGlobalComponentTable().get("root1")[0].search("person2"))

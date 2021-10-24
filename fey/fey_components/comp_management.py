@@ -1,28 +1,31 @@
 from __future__ import annotations
-from fey.src.utility import generate_id
-from abc import ABC
+from fey.src.utility import id_generator
+from abc import ABC, abstractmethod
 
 
 class FeyComponentManagement(ABC):
-    _type: type = None
-    _components: [_type, ] = []
-    _id_generator = generate_id()
-    _names = {}
 
-    def add(self, comps: [_type, ]):
+    def __init__(self, *args, **kwargs):
+        self._type: type
+        self._components = []
+        self._id_generator = id_generator
+        self._names = {}
+
+    def add(self, comps=[]):
         for comp in comps:
             assert issubclass(type(comp), self._type)
-            comp.comp_id = next(self._id_generator)
+            if comp._name is not None:
+                self._names[comp.name] = comp
             self._components.append(comp)
 
-    def name(self, name: str, comp_id: int = None):
-        if comp_id is None:
-            comp_id = self.get_newest_comp_id()
-
-        if comp_id is not None or len(self.get(id=comp_id)) == 1:
-            self._names[name] = comp_id
-        else:
-            raise ValueError("Component Id does not exist")
+    def remove(self, comp) -> bool:
+        try:
+            del self._components[(self._components.index(comp))]
+            if comp.name in self._names:
+                del self._names[comp.name]
+            return True
+        except Exception:
+            return False
 
     def get_newest_comp_id(self) -> int:
         if len(self._components) > 0:
@@ -30,11 +33,12 @@ class FeyComponentManagement(ABC):
         else:
             return None
 
-    def get(self, name: str = None, type: type = None, id: int = None) -> [_type, ]:
+    def get(self, name: str = None, type: type = None, id: int = None) -> []:
         res = []
 
         if name is not None:
-            return[self._components[self._names[name]]]
+            if name in self._names:
+                return[self._components[self._components.index(self._names[name])]]
 
         elif id is not None:
             for c in self._components:
