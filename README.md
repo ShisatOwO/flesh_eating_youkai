@@ -37,8 +37,8 @@ To run the example:
     **Windows**
     ```cmd
     cd flesh_eating_youkai
-    set PYTHONPATH=%PYTHONPATH%;"./"
-    python app/app.py
+    set PYTHONPATH=.
+    py app/app.py
     ```
  
  ## Note
