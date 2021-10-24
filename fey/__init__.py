@@ -11,6 +11,10 @@ import fey.fey_components
 import fey.fey_types
 
 
+# Fey
+from fey.src.core import init, run, set_window_title
+
+
 # Config
 class FeyConfig(config.FeyConfig): ...
 class FeyGlobalConfig(config.FeyGlobalConfig): ...

@@ -6,6 +6,6 @@ def generate_id() -> iter:
         n += 1
 
 
-# That is the generator that should be used to generate the ids of the components.
+# That is the generator that should be used to generate the ids of the custom_components.
 # i dont think it'll need anything more complex than simple counting
 id_generator = generate_id()

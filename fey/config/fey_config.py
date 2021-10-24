@@ -19,6 +19,7 @@ class FeyConfig(FeyDataclass):
     original_window_title: str = "Flesh Eating Youkai"
     target_fps: int = 60
     icon_path: str = ""
+    scaling: float = 1
 
     def custom_config(self, config: {}) -> FeyConfig:
         self._custom_config = config
@@ -34,6 +35,7 @@ class FeyGlobalConfig(Singleton):
     original_window_title: str
     target_fps: int
     icon_path: str
+    scaling: float
 
     def __init__(self, conf: FeyConfig = None):
         if isinstance(conf, FeyConfig):
@@ -46,6 +48,7 @@ class FeyGlobalConfig(Singleton):
         self._custom_config = conf._custom_config
         for key in (config := conf.asdict()):
             self.__setattr__(key, config[key])
+        self.screen_dims = Box2D(**self.screen_dims)
 
     def get_dict(self) -> dict:
         out = {
@@ -53,6 +56,7 @@ class FeyGlobalConfig(Singleton):
             "original_window_title": self.original_window_title,
             "target_fps": self.target_fps,
             "icon_path": self.icon_path,
+            "scaling": self.scaling
         }
 
         if isinstance(self._custom_config, dict):
