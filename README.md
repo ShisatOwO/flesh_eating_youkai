@@ -27,7 +27,7 @@ To run the example:
     
     Dont forget to add the root of the repo to your PYTHONPATH, otherwise python
     will not be able to locate the "*fey*" package. The commmands below will add fey to the
-    PYTHONPATH temporarely.
+    PYTHONPATH temporarily.
     
     **Linux/Mac**
     ```shell
