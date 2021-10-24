@@ -7,14 +7,17 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
     def __init__(self, comps=[], name=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._type = FeyBaseComponent
-        self._parent: FeyBaseComponent = None
-        self._active: bool = True
-        self.comp_id = next(self._id_generator)
-        self.name = name
-        self._inactive_components = []
         self._inactive_names = {}
-        self.add(comps)
+        self._inactive_components = []
+        self._parent: FeyBaseComponent = None
+
+        self.name = name
+        self._active: bool = True
+        self._type = FeyBaseComponent
+        self.comp_id = next(self._id_generator)
+
+        if isinstance(comps, list):
+            self.add(comps)
 
     def disable(self):
         self._active = False
@@ -42,17 +45,13 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
 
     def suicide(self) -> bool:
         out = False
-
         if self._parent is not None:
             out = self._parent.remove(self)
-        del self._parent
 
         return out
 
     def __search(self, component: FeyBaseComponent, name, type, id) -> [FeyBaseComponent, ]:
-        out = []
-        out += component.get(name, type, id)
-
+        out = component.get(name, type, id)
         for comp in component._components:
             out += self.__search(comp, name, type, id)
 

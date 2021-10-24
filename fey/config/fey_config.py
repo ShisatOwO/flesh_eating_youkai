@@ -18,6 +18,7 @@ class FeyConfig(FeyDataclass):
     screen_dims: Box2D = Box2D(0, 0, 800, 600)
     original_window_title: str = "Flesh Eating Youkai"
     target_fps: int = 60
+    icon_path: str = ""
 
     def custom_config(self, config: {}) -> FeyConfig:
         self._custom_config = config
@@ -32,6 +33,7 @@ class FeyGlobalConfig(Singleton):
     screen_dims: Box2D
     original_window_title: str
     target_fps: int
+    icon_path: str
 
     def __init__(self, conf: FeyConfig = None):
         if isinstance(conf, FeyConfig):
@@ -50,6 +52,7 @@ class FeyGlobalConfig(Singleton):
             "screen_dims": self.screen_dims,
             "original_window_title": self.original_window_title,
             "target_fps": self.target_fps,
+            "icon_path": self.icon_path,
         }
 
         if isinstance(self._custom_config, dict):

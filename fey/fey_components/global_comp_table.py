@@ -10,7 +10,7 @@ class FeyGlobalComponentTable(FeyComponentManagement, Singleton):
     _id_generator = id_generator
     _names = {}
 
-    def __init__(self, components: [FeyBaseComponent, ]=[]):
+    def __init__(self, components: [FeyBaseComponent, ] = []):
         self._type = FeyBaseComponent
 
         if isinstance(components, list):
