@@ -15,7 +15,7 @@ class FeyComponentManagement(ABC):
         for comp in comps:
             assert issubclass(type(comp), self._type)
             if comp._name is not None:
-                self._names[comp.name] = comp
+                self._names[comp._name] = comp
             self._components.append(comp)
 
     def remove(self, comp) -> bool:

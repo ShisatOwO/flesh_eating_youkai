@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from fey.fey_types import Singleton, FeyDataclass, Box2D
+from fey.fey_types import Singleton, FeyDataclass, Box2D, Point2D
 
 
 """
@@ -15,7 +15,7 @@ Es funktioniert aber für jetzt, später werde ich das aber noch überarbeiten.
 class FeyConfig(FeyDataclass):
     _custom_config: {} = None
 
-    screen_dims: Box2D = Box2D(0, 0, 800, 600)
+    screen_dims: Box2D = Box2D(Point2D(0, 0), Point2D(800, 600))
     original_window_title: str = "Flesh Eating Youkai"
     target_fps: int = 60
     icon_path: str = ""
@@ -48,7 +48,8 @@ class FeyGlobalConfig(Singleton):
         self._custom_config = conf._custom_config
         for key in (config := conf.asdict()):
             self.__setattr__(key, config[key])
-        self.screen_dims = Box2D(**self.screen_dims)
+
+        self.screen_dims = Box2D(Point2D(**self.screen_dims["pos"]), Point2D(**self.screen_dims["dim"]))
 
     def get_dict(self) -> dict:
         out = {

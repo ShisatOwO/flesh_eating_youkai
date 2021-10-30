@@ -1,23 +1,33 @@
 from __future__ import annotations
 from fey.fey_components.comp_management import FeyComponentManagement
+from fey.config import FeyGlobalConfig
+from fey.fey_types import Point2D, Box2D
 from abc import ABC
 
 
 class FeyBaseComponent(FeyComponentManagement, ABC):
-    def __init__(self, comps=[], name=None, *args, **kwargs):
+    def __init__(self, comps=[], name=None, pos: Point2D = Point2D(0, 0), dim: Point2D = Point2D(0, 0), *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self._inactive_names = {}
         self._inactive_components = []
         self._parent: FeyBaseComponent = None
 
-        self.name = name
+        self._name = name
         self._active: bool = True
         self._type = FeyBaseComponent
         self.comp_id = next(self._id_generator)
 
+        self.box = Box2D(Point2D(0, 0), dim)
+
         if isinstance(comps, list):
             self.add(comps)
+
+        self.move(pos)
+
+    def init(self, *args, **kwargs):
+        for comp in self._components:
+            comp.init(*args, **kwargs)
 
     def disable(self):
         self._active = False
@@ -40,7 +50,7 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
             assert issubclass(type(comp), FeyBaseComponent)
             comp._parent = self
             if comp._name is not None:
-                self._names[comp.name] = comp
+                self._names[comp._name] = comp
             self._components.append(comp)
 
     def suicide(self) -> bool:
@@ -67,3 +77,19 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
             return self._parent.search(name, type, id)
 
         return self.__search(self, name, type, id)
+
+    def get_root(self) -> FeyBaseComponent:
+        if self._parent is not None:
+            return self._parent.get_root()
+        return self
+
+    def get_parent_box(self) -> Box2D:
+        if self._parent is None:
+            return FeyGlobalConfig().screen_dims
+        return self._parent.box
+
+    def move(self, pos: Point2D):
+        self.box.pos += pos
+        for comp in self._components:
+            comp.move(pos)
+
