@@ -1,7 +1,8 @@
 from __future__ import annotations
 from fey.fey_components.comp_management import FeyComponentManagement
 from fey.config import FeyGlobalConfig
-from fey.fey_types import Point2D, Box2D
+from fey.fey_types import Point2D, Box2D, Interpolation
+from fey.fey_game_time import FeyGameTime
 from abc import ABC
 
 
@@ -19,6 +20,8 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
         self.comp_id = next(self._id_generator)
 
         self.box = Box2D(Point2D(0, 0), dim)
+
+        self._move_interpol: [Interpolation, ] = []
 
         if isinstance(comps, list):
             self.add(comps)
@@ -42,8 +45,15 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
     def is_active(self):
         return self._active
 
-    def process(self, ctx):
-        ...
+    def process(self, ctx=None):
+        for comp in self._components:
+            comp.process(ctx)
+
+        for i, v in enumerate(self._move_interpol):
+            if not (pos := v.interpolate(FeyGameTime().delta * FeyGameTime().time)):
+                del self._move_interpol[i]
+                break
+            self.move(pos)
 
     def add(self, comps: [FeyBaseComponent, ]=[]):
         for comp in comps:
@@ -72,10 +82,13 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
             return out[0]
         return False
 
-    def search(self, name: str = None, type=None ,  id: int = None) -> [FeyBaseComponent, ]:
+    def global_search(self, name: str = None, type=None ,  id: int = None) -> [FeyBaseComponent, ]:
         if self._parent is not None:
             return self._parent.search(name, type, id)
 
+        return self.__search(self, name, type, id)
+
+    def search(self, name: str = None, type=None ,  id: int = None) -> [FeyBaseComponent, ]:
         return self.__search(self, name, type, id)
 
     def get_root(self) -> FeyBaseComponent:
@@ -92,4 +105,11 @@ class FeyBaseComponent(FeyComponentManagement, ABC):
         self.box.pos += pos
         for comp in self._components:
             comp.move(pos)
+
+    def move_over_time(self, direction: Point2D, duration: int):
+        self._move_interpol.append(Interpolation(direction, duration))
+
+    def scale_over_time(self): ...
+    def rotate_over_time(self): ...
+    def fade_over_time(self): ...
 

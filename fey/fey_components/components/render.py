@@ -19,8 +19,11 @@ class Render(FeyBaseComponent):
         self.box = self.get_root().box
         self.sprites = self.get_root().search(type=Sprite)
         self.appearance = pg.Surface(self.box.dim.astuple())
+        self.appearance.set_colorkey((255, 0, 255))
+        self.appearance.fill((255, 0, 255))
 
     def render(self, surface: pg.Surface):
+        self.appearance.fill((255, 0, 255))
         for sprite in self.sprites:
             sprite.draw(self.appearance)
             surface.blit(self.appearance, self.box.pos.astuple())

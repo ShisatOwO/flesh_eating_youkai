@@ -37,6 +37,14 @@ class Point2D(FeyDataclass):
     def __sub__(self, other) -> Point2D:
         return Point2D(self.x-other.x, self.y-other.y)
 
+    def __truediv__(self, other) -> Point2D:
+        if not isinstance(other, Point2D):
+            return Point2D(self.x / other, self.y / other)
+
+    def __mul__(self, other) -> Point2D:
+        if not isinstance(other, Point2D):
+            return Point2D(self.x * other, self.y * other)
+
     def astuple(self):
         return self.x, self.y
 
@@ -52,3 +60,26 @@ class Box2D(FeyDataclass):
         return Box2D(self.pos+other.pos, self.dim+other.dim)
 
     #TODO: Add implementations for -, * and /
+
+
+class Interpolation:
+    def __init__(self, target: Point2D, duration: float):
+        self._duration  = duration
+        self._target    = target
+        self._velocity  = target / duration
+        self._time      = 0
+        self._interpolated_by = Point2D(0, 0)
+
+    def interpolate(self, time: float, f=lambda v, t: v):
+        if self._time >= self._duration:
+            return False
+
+        n = f(self._velocity, self._time)
+        self._time += time
+
+        if self._time >= self._duration:
+            return self._target - self._interpolated_by
+
+        n = n * time
+        self._interpolated_by += n
+        return n
