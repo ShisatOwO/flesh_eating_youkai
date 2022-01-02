@@ -1,5 +1,5 @@
 import pygame as pg
-from fey.config import FeyGlobalConfig, FeyConfig
+from fey.fey_config import FeyGlobalConfig, FeyConfig
 from fey.fey_components import FeyGlobalComponentTable
 from fey.fey_components.components.render import Render
 from fey.fey_game_time import FeyGameTime
@@ -51,6 +51,8 @@ def run(window: pg.Surface, wbuffer: pg.Surface, clock: pg.time.Clock) -> int:
                 running = False
 
             if e.type == pg.KEYDOWN:
+
+
                 if e.key == pg.K_m:
                     FeyGlobalComponentTable().qget("Scene_01").qsearch("Entity").move_over_time(Point2D(100, 0), 0.1)
 

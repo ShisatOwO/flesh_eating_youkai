@@ -6,7 +6,7 @@ except ImportError:
           "Pygame needs to be installed in oder for Fey to work.")
     sys.exit(1)
 
-import fey.config
+import fey.fey_config
 import fey.fey_components
 import fey.fey_types
 
@@ -16,8 +16,8 @@ from fey.src.core import init, run, set_window_title
 
 
 # Config
-class FeyConfig(config.FeyConfig): ...
-class FeyGlobalConfig(config.FeyGlobalConfig): ...
+class FeyConfig(fey_config.FeyConfig): ...
+class FeyGlobalConfig(fey_config.FeyGlobalConfig): ...
 
 
 # Components

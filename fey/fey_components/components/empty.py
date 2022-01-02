@@ -1,5 +1,5 @@
 from fey.fey_components import FeyBaseComponent
-from fey.config import FeyConfig
+from fey.fey_config import FeyConfig
 
 
 class Empty(FeyBaseComponent):

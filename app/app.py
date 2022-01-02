@@ -1,7 +1,6 @@
 from fey import *
-from custom_components.dummy_components import *
+from fey.fey_input import *
 from fey import Component as Comp
-
 
 run_context = init(
     FeyConfig(

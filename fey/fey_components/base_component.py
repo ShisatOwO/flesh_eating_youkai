@@ -1,6 +1,6 @@
 from __future__ import annotations
 from fey.fey_components.comp_management import FeyComponentManagement
-from fey.config import FeyGlobalConfig
+from fey.fey_config import FeyGlobalConfig
 from fey.fey_types import Point2D, Box2D, Interpolation
 from fey.fey_game_time import FeyGameTime
 from abc import ABC

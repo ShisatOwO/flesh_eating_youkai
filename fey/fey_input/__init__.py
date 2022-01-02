@@ -1,0 +1,3 @@
+from fey.fey_input.fey_input import *
+
+class FeyInput(fey_input.FeyInput): ...

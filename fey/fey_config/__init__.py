@@ -1,4 +1,4 @@
-from fey.config.fey_config import *
+from fey.fey_config.fey_config import *
 
 
 class FeyConfig(FeyConfig): ...
